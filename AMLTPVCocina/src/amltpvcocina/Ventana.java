@@ -88,9 +88,14 @@ public class Ventana extends javax.swing.JFrame {
             }
         });
         table.setRowHeight(26);
+        table.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tableKeyPressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(table);
 
-        siguienteButton.setFont(new java.awt.Font("Tahoma", 0, 36));
+        siguienteButton.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         siguienteButton.setText("Siguiente");
         siguienteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -133,20 +138,11 @@ public class Ventana extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void siguienteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_siguienteButtonActionPerformed
+    private void siguiente(){
+        System.out.println("Siguiente");
         watchVector.get(0).stop();
 
         String mesa = (String) model.getValueAt(0, 0);
-        try {
-            Conexion conexion = new Conexion(Main.serverName);
-            conexion.sendMsg("mesaServida@"+mesa);
-            conexion.waitForMsgs(false);
-        } catch (UnknownHostException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
 
         int numberOfRows = getNumberOfRowsOfMesa(mesa);
         System.out.println("Number of rows for mesa is "+numberOfRows);
@@ -157,6 +153,18 @@ public class Ventana extends javax.swing.JFrame {
         while (iter.hasNext()){
             ((Watch) iter.next()).upRows(numberOfRows+1);
         }
+        try {
+            Conexion conexion = new Conexion(Main.serverName);
+            conexion.sendMsg("mesaServida@"+mesa);
+            conexion.waitForMsgs(false);
+        } catch (UnknownHostException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+    private void siguienteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_siguienteButtonActionPerformed
+        siguiente();
         
     }//GEN-LAST:event_siguienteButtonActionPerformed
 
@@ -165,6 +173,10 @@ public class Ventana extends javax.swing.JFrame {
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }//GEN-LAST:event_mesasMenuItemActionPerformed
+
+    private void tableKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableKeyPressed
+        siguiente();
+    }//GEN-LAST:event_tableKeyPressed
 
    private void siguienteButtonActionPerformedProcess(String mesa) {
         model.removeRow(0);
