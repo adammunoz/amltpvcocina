@@ -25,6 +25,8 @@ public class MesasDialog extends javax.swing.JDialog {
     public static final int RET_OK = 1;
     private int numMesas = 0;
     private DefaultTableModel model;
+    String[] mesasArray = null;
+    String mesasToPersist = "";
     /** Creates new form MesasDialog */
     public MesasDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -37,6 +39,18 @@ public class MesasDialog extends javax.swing.JDialog {
         catch (IOException ex){
             ex.printStackTrace();
         }
+        String persistedMesas = Main.persister.operator.retrieveValue("mesas");
+        if (persistedMesas.equals("error")){
+            Main.persister.operator.newSetting("mesas", "");
+
+        }
+        else{
+            mesasArray = persistedMesas.split("-");
+            for (String mesa : mesasArray){
+                model.setValueAt(true, Integer.parseInt(mesa)-1, 1);
+            }
+        }
+        okButton.requestFocusInWindow();
     }
 
     public void getNumMesas() throws IOException{
@@ -47,7 +61,7 @@ public class MesasDialog extends javax.swing.JDialog {
     }
     void fillTable(){
         for (int i=1;i<=numMesas;i++){
-            model.addRow(new Object[] {Integer.toString(i),true});
+            model.addRow(new Object[] {Integer.toString(i),false});
         }
     }
     /** @return the return status of this dialog - one of RET_OK or RET_CANCEL */
@@ -79,6 +93,11 @@ public class MesasDialog extends javax.swing.JDialog {
         okButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okButtonActionPerformed(evt);
+            }
+        });
+        okButton.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                okButtonKeyPressed(evt);
             }
         });
 
@@ -148,8 +167,14 @@ public class MesasDialog extends javax.swing.JDialog {
         for (int i=0;i<numOfRows;i++){
             if ((Boolean) model.getValueAt(i, 1)){
                 Main.listening.add((String)model.getValueAt(i, 0));
+                mesasToPersist = mesasToPersist + (String) model.getValueAt(i, 0) + "-";
             }
         }
+        System.out.println("Mesas string to persist " + mesasToPersist);
+        int lastChar = mesasToPersist.length() -1;
+        mesasToPersist = mesasToPersist.substring(0, lastChar);
+        System.out.println("Mesas string stripped to persist " + mesasToPersist);
+        Main.persister.operator.updateSetting("mesas", mesasToPersist);
         doClose(RET_OK);
     }//GEN-LAST:event_okButtonActionPerformed
 
@@ -162,28 +187,17 @@ public class MesasDialog extends javax.swing.JDialog {
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
 
+    private void okButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_okButtonKeyPressed
+        okButtonActionPerformed(new java.awt.event.ActionEvent(okButton,0,"dummy"));
+    }//GEN-LAST:event_okButtonKeyPressed
+
     private void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
         dispose();
     }
 
-    /**
-    * @param args the command line arguments
-    */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                MesasDialog dialog = new MesasDialog(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;

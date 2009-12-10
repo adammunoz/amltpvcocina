@@ -25,6 +25,11 @@ public class Main {
         ServerNameDialog serverNameDialog = new ServerNameDialog(null,true);
         serverNameDialog.setLocationRelativeTo(null);
         serverNameDialog.setVisible(true);
+
+        MesasDialog mesasDialog = new MesasDialog(null,true);
+        mesasDialog.setLocationRelativeTo(null);
+        mesasDialog.setVisible(true);
+
         Ventana mainWindow = new Ventana();
         mainWindow.setLocationRelativeTo(null);
         mainWindow.setVisible(true);

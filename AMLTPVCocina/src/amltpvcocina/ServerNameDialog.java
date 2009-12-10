@@ -46,6 +46,12 @@ public class ServerNameDialog extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Introduca el nombre del servidor");
 
+        serverNameField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                serverNameFieldActionPerformed(evt);
+            }
+        });
+
         conectarButton.setText("Conectar");
         conectarButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -87,6 +93,10 @@ public class ServerNameDialog extends javax.swing.JDialog {
         Main.persister.operator.updateSetting("servidor", Main.serverName);
         this.dispose();
     }//GEN-LAST:event_conectarButtonActionPerformed
+
+    private void serverNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serverNameFieldActionPerformed
+        conectarButtonActionPerformed(evt);
+    }//GEN-LAST:event_serverNameFieldActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton conectarButton;

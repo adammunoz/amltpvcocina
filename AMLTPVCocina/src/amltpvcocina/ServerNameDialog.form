@@ -52,6 +52,9 @@
   </Layout>
   <SubComponents>
     <Component class="javax.swing.JTextField" name="serverNameField">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="serverNameFieldActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JToggleButton" name="conectarButton">
       <Properties>
