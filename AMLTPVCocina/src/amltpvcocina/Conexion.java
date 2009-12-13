@@ -92,6 +92,34 @@ public class Conexion {
             }
             
         }
+        if (msg.startsWith("moverMesaCocina")){
+            System.out.println("Identified mover mesa");
+            String[] a = msg.split("@");
+            String operation = a[0];
+            String operand = a[1];
+            String[] b = operand.split(":");
+            String source = b[0];
+            String target = b[1];
+            if (Main.listening.contains(source) && Main.listening.contains(target)){
+                Vector<Integer> rows = Ventana.selfReference.getContentsTablePositionWithMesa(source);
+                for (int row: rows){
+                    Ventana.selfReference.model.setValueAt(target, row, 0);
+                }
+
+                
+            }
+            else if (Main.listening.contains(source) && !Main.listening.contains(target)){
+                Vector<Integer> rows = Ventana.selfReference.getContentsTablePositionWithMesa(source);
+                for (int row: rows){
+                    //Ventana.selfReference.removeRow(row); THIS IS NOT WORKING
+                }
+
+            }
+            else {
+                return "nothing done";
+            }
+            return "done";
+        }
         else if (msg.startsWith("borrar")){
             if (Ventana.selfReference.lastInsertedMesa != null){
                 String[] a = msg.split("@");

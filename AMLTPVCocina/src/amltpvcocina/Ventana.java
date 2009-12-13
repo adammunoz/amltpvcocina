@@ -191,6 +191,10 @@ public class Ventana extends javax.swing.JFrame {
         }
    }
 
+   void removeRow(int row) {
+        model.removeRow(row);
+   }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
@@ -273,7 +277,21 @@ public class Ventana extends javax.swing.JFrame {
         }
         return -1;
     }
-
+    Vector getContentsTablePositionWithMesa(String mesa){
+        int rows = model.getRowCount();
+        Vector<Integer> result = new Vector<Integer>();
+        for (int i=0;i<rows;i++){
+            try{
+                if (model.getValueAt(i, 0).equals(mesa)){
+                    result.add(i);
+                }
+            }
+            catch (java.lang.NullPointerException ex){
+                System.out.println("Ignorando null value");
+            }
+        }
+        return result;
+    }
     void borrarProducto(String mesa, String producto) {
         try{
             int foundRow = getContentsTablePositionWithProductoAndMesa(producto, mesa);
